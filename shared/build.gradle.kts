@@ -62,9 +62,9 @@ kotlin {
         jvmMain.dependencies {
             implementation(libs.logback)
         }
-        val iosMain by getting {
+       /* val iosMain by getting {
             resources.srcDir("${project.projectDir}/src/commonMain/resources")
-        }
+        }*/
     }
 }
 
