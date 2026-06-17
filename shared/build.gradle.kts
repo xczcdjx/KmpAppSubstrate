@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import kotlin.jvm.java
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -63,6 +62,9 @@ kotlin {
         jvmMain.dependencies {
             implementation(libs.logback)
         }
+        val iosMain by getting {
+            resources.srcDir("${project.projectDir}/src/commonMain/resources")
+        }
     }
 }
 
@@ -70,10 +72,17 @@ dependencies {
     androidRuntimeClasspath(libs.compose.uiTooling)
 }
 
+
 // static resources
 tasks.register("genComposeRes") {
     group = "compose resources"
     description = "Generate Compose Multiplatform Res class"
 
     dependsOn("generateComposeResClass")
+}
+
+// Copy Static
+tasks.register<Copy>("copyWebDistToIOS") {
+    from("${project.projectDir}/src/commonMain/resources/www")
+    into("${buildDir}/iosResources/www")
 }

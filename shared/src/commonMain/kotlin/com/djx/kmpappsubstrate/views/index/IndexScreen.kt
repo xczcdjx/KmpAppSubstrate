@@ -24,7 +24,7 @@ fun IndexScreen(modifier: Modifier = Modifier, go: (n: String) -> Unit) {
                 Text("Romote WebView Demo")
             }
             TextButton({
-                go(Routes.Remote.route)
+                go(Routes.Local.route)
             }) {
                 Text("Local WebView Demo")
             }
