@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import kotlin.jvm.java
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -49,13 +50,30 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            // icon
+            implementation(libs.material.icons.extended)
+            // webview
+            api("io.github.kevinnzou:compose-webview-multiplatform:2.0.3")
+            // navigation
+            implementation(libs.navigation.compose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+        jvmMain.dependencies {
+            implementation(libs.logback)
         }
     }
 }
 
 dependencies {
     androidRuntimeClasspath(libs.compose.uiTooling)
+}
+
+// static resources
+tasks.register("genComposeRes") {
+    group = "compose resources"
+    description = "Generate Compose Multiplatform Res class"
+
+    dependsOn("generateComposeResClass")
 }
