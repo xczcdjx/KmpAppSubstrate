@@ -13,17 +13,48 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.djx.kmpappsubstrate.export.LocalWeb
+import com.multiplatform.webview.util.KLogSeverity
 import com.multiplatform.webview.web.LoadingState
 import com.multiplatform.webview.web.WebView
+import com.multiplatform.webview.web.WebViewFileReadType
 import com.multiplatform.webview.web.rememberWebViewNavigator
 import com.multiplatform.webview.web.rememberWebViewState
+import com.multiplatform.webview.web.rememberWebViewStateWithHTMLFile
 
 @Composable
 fun LocalScreen(back: () -> Unit = {}) {
-    val state = rememberWebViewState(url = LocalWeb.index())
+//    val webViewState = rememberWebViewState(url = LocalWeb.index())
+    val webViewState =
+        rememberWebViewStateWithHTMLFile(
+            fileName = "index.html",
+            readType = WebViewFileReadType.ASSET_RESOURCES,
+        )
     val navigator = rememberWebViewNavigator()
+    LaunchedEffect(Unit) {
+        webViewState.webSettings.zoomLevel = 1.0
+
+        webViewState.webSettings.apply {
+            allowUniversalAccessFromFileURLs = true
+            zoomLevel = 1.0
+            logSeverity = KLogSeverity.Debug
+            backgroundColor = Color.White
+            androidWebSettings.apply {
+                isAlgorithmicDarkeningAllowed = true
+                safeBrowsingEnabled = true
+
+                allowFileAccess = true   // ⭐必须打开
+                isJavaScriptEnabled=true
+            }
+            iOSWebSettings.apply {
+                backgroundColor = Color.White
+                underPageBackgroundColor = Color.White
+            }
+        }
+    }
     Scaffold(topBar = {
         TopAppBar(
             title = {
@@ -48,9 +79,9 @@ fun LocalScreen(back: () -> Unit = {}) {
             })
     }) { paddingValues ->
         Column(Modifier.padding(paddingValues).fillMaxSize()) {
-            Text(text = state.pageTitle ?: "null")
+            Text(text = webViewState.pageTitle ?: "null")
 
-            val loadingState = state.loadingState
+            val loadingState = webViewState.loadingState
             if (loadingState is LoadingState.Loading) {
                 LinearProgressIndicator(
                     progress = { loadingState.progress },
@@ -59,11 +90,12 @@ fun LocalScreen(back: () -> Unit = {}) {
             }
 
             WebView(
-                state = state,
+                state = webViewState,
                 navigator = navigator,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
+                    .weight(1f),
+
             )
         }
     }
