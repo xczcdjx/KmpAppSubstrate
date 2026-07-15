@@ -58,6 +58,8 @@ kotlin {
             // embedded static server for the bundled web application
             implementation(libs.ktor.server.core)
             implementation(libs.ktor.server.cio)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.cio)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

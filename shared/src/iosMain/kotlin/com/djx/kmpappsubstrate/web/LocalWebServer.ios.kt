@@ -25,6 +25,7 @@ actual object LocalWebServer {
 
         val server = embeddedServer(CIO, host = HOST, port = PORT) {
             routing {
+                installApiProxy()
                 get("/{path...}") {
                     val requestPath = call.parameters.getAll("path")
                         ?.joinToString("/")

@@ -20,6 +20,7 @@ actual object LocalWebServer {
 
         val server = embeddedServer(CIO, host = HOST, port = PORT) {
             routing {
+                installApiProxy()
                 staticResources("/", "assets") {
                     defaultResource("index.html", "assets")
                 }
