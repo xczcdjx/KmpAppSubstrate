@@ -1,7 +1,6 @@
 package com.djx.kmpappsubstrate.web
 
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.request
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsChannel
@@ -17,7 +16,7 @@ import kotlinx.io.readByteArray
 
 private const val REMOTE_ORIGIN = "https://transient.cloud"
 
-private val proxyClient = HttpClient(CIO) {
+private val proxyClient = createProxyHttpClient().config {
     followRedirects = false
 }
 

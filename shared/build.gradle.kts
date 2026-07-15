@@ -39,6 +39,7 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
+            implementation(libs.ktor.client.cio)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -59,13 +60,19 @@ kotlin {
             implementation(libs.ktor.server.core)
             implementation(libs.ktor.server.cio)
             implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.cio)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
         jvmMain.dependencies {
             implementation(libs.logback)
+            implementation(libs.ktor.client.cio)
+        }
+        iosArm64Main.dependencies {
+            implementation(libs.ktor.client.darwin)
+        }
+        iosSimulatorArm64Main.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
     }
 }
