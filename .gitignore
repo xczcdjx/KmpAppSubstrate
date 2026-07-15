@@ -17,3 +17,6 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
+desktopApp/kcef-bundle
+desktopApp/cache
+shared/src/commonMain/resources/assets/*
