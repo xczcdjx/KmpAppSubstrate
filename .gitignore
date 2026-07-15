@@ -19,4 +19,4 @@ captures
 node_modules/
 desktopApp/kcef-bundle
 desktopApp/cache
-shared/src/commonMain/resources/assets/*
+shared/src/commonMain/resources/www/*

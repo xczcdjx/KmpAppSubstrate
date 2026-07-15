@@ -71,7 +71,7 @@ kotlin {
 }
 
 val prepareWebComposeResources by tasks.registering(Sync::class) {
-    from(layout.projectDirectory.dir("src/commonMain/resources/assets"))
+    from(layout.projectDirectory.dir("src/commonMain/resources/www"))
     into(layout.buildDirectory.dir("generatedWebComposeResources/files/web"))
 }
 
