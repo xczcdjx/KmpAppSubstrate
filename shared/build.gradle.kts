@@ -104,7 +104,7 @@ tasks.register("genComposeRes") {
     dependsOn("generateComposeResClass")
 }
 
-// Copy Static
+// Copy IOS Static
 tasks.register<Copy>("copyWebDistToIOS") {
     from("${project.projectDir}/src/commonMain/resources/www")
     into("${buildDir}/iosResources/www")
