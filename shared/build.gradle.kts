@@ -55,6 +55,9 @@ kotlin {
             api("io.github.kevinnzou:compose-webview-multiplatform:2.0.3")
             // navigation
             implementation(libs.navigation.compose)
+            // embedded static server for the bundled web application
+            implementation(libs.ktor.server.core)
+            implementation(libs.ktor.server.cio)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -62,10 +65,21 @@ kotlin {
         jvmMain.dependencies {
             implementation(libs.logback)
         }
-       /* val iosMain by getting {
-            resources.srcDir("${project.projectDir}/src/commonMain/resources")
-        }*/
     }
+}
+
+val prepareWebComposeResources by tasks.registering(Sync::class) {
+    from(layout.projectDirectory.dir("src/commonMain/resources/assets"))
+    into(layout.buildDirectory.dir("generatedWebComposeResources/files/web"))
+}
+
+compose.resources {
+    customDirectory(
+        sourceSetName = "commonMain",
+        directoryProvider = prepareWebComposeResources.map {
+            layout.buildDirectory.dir("generatedWebComposeResources").get()
+        },
+    )
 }
 
 dependencies {

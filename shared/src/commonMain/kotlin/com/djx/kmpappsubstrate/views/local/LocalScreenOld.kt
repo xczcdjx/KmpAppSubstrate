@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.djx.kmpappsubstrate.web.LocalWebServer
@@ -23,25 +24,30 @@ import com.multiplatform.webview.web.rememberWebViewNavigator
 import com.multiplatform.webview.web.rememberWebViewState
 
 @Composable
-fun LocalScreen(back: () -> Unit = {}) {
+fun LocalScreenOld(back: () -> Unit = {}) {
+    LocalWebServer.start()
+    println("indexUrl${LocalWebServer.indexUrl}")
     val webViewState = rememberWebViewState(url = LocalWebServer.indexUrl)
     val navigator = rememberWebViewNavigator()
-    webViewState.webSettings.apply {
-        allowUniversalAccessFromFileURLs = true
-        zoomLevel = 1.0
-        logSeverity = KLogSeverity.Debug
-        backgroundColor = Color.White
-        androidWebSettings.apply {
-            isAlgorithmicDarkeningAllowed = true
-            safeBrowsingEnabled = true
-            allowFileAccess = true
-            isJavaScriptEnabled = true
-            // Vue/Pinia reads localStorage during startup.
-            domStorageEnabled = true
-        }
-        iOSWebSettings.apply {
+    LaunchedEffect(Unit) {
+        webViewState.webSettings.zoomLevel = 1.0
+
+        webViewState.webSettings.apply {
+            allowUniversalAccessFromFileURLs = true
+            zoomLevel = 1.0
+            logSeverity = KLogSeverity.Debug
             backgroundColor = Color.White
-            underPageBackgroundColor = Color.White
+            androidWebSettings.apply {
+                isAlgorithmicDarkeningAllowed = true
+                safeBrowsingEnabled = true
+
+                allowFileAccess = true   // ⭐必须打开
+                isJavaScriptEnabled=true
+            }
+            iOSWebSettings.apply {
+                backgroundColor = Color.White
+                underPageBackgroundColor = Color.White
+            }
         }
     }
     Scaffold(topBar = {
@@ -85,7 +91,7 @@ fun LocalScreen(back: () -> Unit = {}) {
                     .fillMaxWidth()
                     .weight(1f),
 
-                )
+            )
         }
     }
 }
